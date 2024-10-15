@@ -1,14 +1,16 @@
 package com.eventcraft.Controller.ServiceProvider;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.eventcraft.DTO.ServiceProvider.ServiceProviderDTO;
 import com.eventcraft.Services.ServiceProvider.ServiceProviderService;
+
 import com.eventcraft.entities.ServiceProvider.ServiceProvider;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/serviceProviders")
@@ -18,31 +20,38 @@ public class ServiceProviderController {
     private ServiceProviderService serviceProviderService;
 
     @GetMapping
-    public ResponseEntity<List<ServiceProvider>> getAllServiceProviders() {
-        return ResponseEntity.ok(serviceProviderService.getAllServiceProviders());
+    public ResponseEntity<List<ServiceProviderDTO>> getAllServiceProviders() {
+        List<ServiceProvider> serviceProviders = serviceProviderService.getAllServiceProviders();
+        List<ServiceProviderDTO> serviceProviderDTOs = serviceProviders.stream()
+                .map(serviceProviderService::convertToDTO)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(serviceProviderDTOs);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ServiceProvider> getServiceProviderById(@PathVariable Long id) {
-        return ResponseEntity.ok(serviceProviderService.getServiceProviderById(id));
+    public ResponseEntity<ServiceProviderDTO> getServiceProviderById(@PathVariable Long id) {
+        ServiceProvider serviceProvider = serviceProviderService.getServiceProviderById(id);
+        return ResponseEntity.ok(serviceProviderService.convertToDTO(serviceProvider));
     }
 
     @PostMapping
-    public ResponseEntity<ServiceProvider> createServiceProvider(@RequestBody ServiceProvider serviceProvider) {
-        return ResponseEntity.ok(serviceProviderService.createServiceProvider(serviceProvider));
+    public ResponseEntity<ServiceProviderDTO> createServiceProvider(@RequestBody ServiceProviderDTO serviceProviderDTO) {
+        ServiceProvider serviceProvider = serviceProviderService.convertToEntity(serviceProviderDTO);
+        ServiceProvider createdServiceProvider = serviceProviderService.createServiceProvider(serviceProvider);
+        return ResponseEntity.ok(serviceProviderService.convertToDTO(createdServiceProvider));
     }
-    
+
     @PutMapping("/{id}")
-    public ResponseEntity<ServiceProvider> updateServiceProvider(
-            @PathVariable Long id, 
-            @RequestBody ServiceProvider updatedServiceProvider) {
-        ServiceProvider serviceProvider = serviceProviderService.updateServiceProvider(id, updatedServiceProvider);
-        return ResponseEntity.ok(serviceProvider);
+    public ResponseEntity<ServiceProviderDTO> updateServiceProvider(
+            @PathVariable Long id,
+            @RequestBody ServiceProviderDTO serviceProviderDTO) {
+        ServiceProvider updatedServiceProvider = serviceProviderService.updateServiceProvider(id, serviceProviderService.convertToEntity(serviceProviderDTO));
+        return ResponseEntity.ok(serviceProviderService.convertToDTO(updatedServiceProvider));
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteServiceProvider(@PathVariable Long id) {
         serviceProviderService.deleteServiceProvider(id);
         return ResponseEntity.noContent().build();
     }
 }
-
