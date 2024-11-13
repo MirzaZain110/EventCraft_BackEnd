@@ -1,36 +1,17 @@
-package com.eventcraft.entities.Users;
+package com.eventcraft.DTO.User;
 
-import jakarta.persistence.*;
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "users") // Optional: Explicit table name, can be omitted if not needed.
-public class User {
+public class UserDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
-
-    @Column(nullable = false)
     private String userName;
-
-    @Column(nullable = false, unique = true)
     private String userEmail;
-
-    @Column(nullable = false)
-    private String userPassword;
-
-    @Column(nullable = false)
     private String userPhone;
-
-    @Column(nullable = true)
     private String userLocation;
-
-    @Column(nullable = false)
     private LocalDate userDateOfBirth;
-
-    @Column(nullable = true) // Optional
-    private String userImage; // New field for the user image URL
+    private String userPassword;
+    private String userImage; // New field for image path
 
     // Getters and Setters
 
@@ -58,14 +39,6 @@ public class User {
         this.userEmail = userEmail;
     }
 
-    public String getUserPassword() {
-        return userPassword;
-    }
-
-    public void setUserPassword(String userPassword) {
-        this.userPassword = userPassword;
-    }
-
     public String getUserPhone() {
         return userPhone;
     }
@@ -88,6 +61,14 @@ public class User {
 
     public void setUserDateOfBirth(LocalDate userDateOfBirth) {
         this.userDateOfBirth = userDateOfBirth;
+    }
+
+    public String getUserPassword() {
+        return userPassword;
+    }
+
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
     }
 
     public String getUserImage() {

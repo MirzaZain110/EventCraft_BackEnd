@@ -1,9 +1,9 @@
 package com.eventcraft.Controller.User;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.eventcraft.Services.User.UserService;
 import com.eventcraft.entities.Users.User;
@@ -42,5 +42,10 @@ public class UserController {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
-}
 
+    @PostMapping("/{id}/uploadImage")
+    public ResponseEntity<String> uploadUserImage(@PathVariable Long id, @RequestParam("image") MultipartFile file) {
+        String imageUrl = userService.uploadUserImage(id, file);
+        return ResponseEntity.ok(imageUrl);
+    }
+}
