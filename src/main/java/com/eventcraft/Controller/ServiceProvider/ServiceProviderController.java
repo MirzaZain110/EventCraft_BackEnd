@@ -14,6 +14,8 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/serviceProviders")
+
+@CrossOrigin(origins = "*") 
 public class ServiceProviderController {
 
     @Autowired
@@ -53,5 +55,16 @@ public class ServiceProviderController {
     public ResponseEntity<Void> deleteServiceProvider(@PathVariable Long id) {
         serviceProviderService.deleteServiceProvider(id);
         return ResponseEntity.noContent().build();
+    }
+    @PostMapping("/login")
+    public ResponseEntity<ServiceProviderDTO> login(@RequestBody ServiceProviderDTO loginRequest) {
+        try {
+            ServiceProvider serviceProvider = serviceProviderService.authenticate(
+                    loginRequest.getServiceProviderEmail(),
+                    loginRequest.getServiceProviderPassword());
+            return ResponseEntity.ok(serviceProviderService.convertToDTO(serviceProvider));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(401).build(); // Unauthorized
+        }
     }
 }

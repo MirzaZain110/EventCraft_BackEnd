@@ -9,7 +9,7 @@ public class ServiceProvider {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long serviceProviderId;
 
-    @Column(nullable = false)
+    @Column(unique = true, nullable = false)
 	private String serviceProviderEmail;
     
     @Column(nullable = false)

@@ -9,7 +9,6 @@ import com.eventcraft.entities.ServiceProvider.ServiceProvider;
 
 import java.util.List;
 import java.util.Optional;
-
 @Service
 public class ServiceProviderService {
 
@@ -50,6 +49,18 @@ public class ServiceProviderService {
         }
     }
 
+    public ServiceProvider authenticate(String serviceProviderEmail, String password) {
+        // Fetch the service provider by email
+        ServiceProvider serviceProvider = serviceProviderRepository.findByserviceProviderEmail(serviceProviderEmail);
+
+        // Validate password
+        if (serviceProvider != null && serviceProvider.getServiceProviderPassword().equals(password)) {
+            return serviceProvider;
+        }
+
+        throw new RuntimeException("Invalid email or password");
+    }
+
     // DTO to Entity Conversion
     public ServiceProvider convertToEntity(ServiceProviderDTO dto) {
         ServiceProvider serviceProvider = new ServiceProvider();
@@ -57,6 +68,7 @@ public class ServiceProviderService {
         serviceProvider.setServiceProviderName(dto.getServiceProviderName());
         serviceProvider.setServiceProviderEmail(dto.getServiceProviderEmail());
         serviceProvider.setServiceProviderPhone(dto.getServiceProviderPhone());
+        serviceProvider.setServiceProviderPassword(dto.getServiceProviderPassword());
         serviceProvider.setServiceProviderLocation(dto.getServiceProviderLocation());
         return serviceProvider;
     }
@@ -67,6 +79,7 @@ public class ServiceProviderService {
         dto.setServiceProviderId(serviceProvider.getServiceProviderId());
         dto.setServiceProviderName(serviceProvider.getServiceProviderName());
         dto.setServiceProviderEmail(serviceProvider.getServiceProviderEmail());
+        dto.setServiceProviderPassword(serviceProvider.getServiceProviderPassword());
         dto.setServiceProviderPhone(serviceProvider.getServiceProviderPhone());
         dto.setServiceProviderLocation(serviceProvider.getServiceProviderLocation());
         return dto;

@@ -6,6 +6,7 @@ public class ServiceProviderDTO {
     private String serviceProviderName;
     private String serviceProviderEmail;
     private String serviceProviderPhone;
+    private String serviceProviderPassword;
     private String serviceProviderLocation;
 
     // Getters and Setters
@@ -13,7 +14,15 @@ public class ServiceProviderDTO {
         return serviceProviderId;
     }
 
-    public void setServiceProviderId(Long serviceProviderId) {
+    public String getServiceProviderPassword() {
+		return serviceProviderPassword;
+	}
+
+	public void setServiceProviderPassword(String serviceProviderPassword) {
+		this.serviceProviderPassword = serviceProviderPassword;
+	}
+
+	public void setServiceProviderId(Long serviceProviderId) {
         this.serviceProviderId = serviceProviderId;
     }
 
