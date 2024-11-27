@@ -26,7 +26,7 @@ public class User {
     @Column(nullable = true)
     private String userLocation;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private LocalDate userDateOfBirth;
 
     @Column(nullable = true) // Optional

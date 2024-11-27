@@ -29,7 +29,11 @@ public class UserService {
         return userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
-
+    // created for login
+    public User getUserByEmail(String email) {
+        return userRepository.findByUserEmail(email);
+    }
+    
     public User createUser(User user) {
         return userRepository.save(user);
     }
@@ -57,19 +61,28 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        String directory = "uploads/images/";
-        new File(directory).mkdirs(); // Ensure directory exists
+        // Directory where images will be stored
+        String directory = "C:\\Users\\Mirza Zain\\OneDrive\\Desktop\\Test Photos\\";
+        File targetDir = new File(directory);
 
-        String fileName = "user_" + userId + "_" + file.getOriginalFilename();
-        Path imagePath = Paths.get(directory + fileName);
-
-        try {
-            Files.copy(file.getInputStream(), imagePath, StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to store image", e);
+        // Ensure the directory exists
+        if (!targetDir.exists()) {
+            targetDir.mkdirs();
         }
 
-        String imageUrl = "http://localhost:8080/" + directory + fileName;
+        // Construct the file name
+        String fileName = "user_" + userId + "_" + file.getOriginalFilename();
+        Path imagePath = Paths.get(directory, fileName);
+
+        try {
+            // Save the file
+            Files.copy(file.getInputStream(), imagePath, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to store image: " + e.getMessage());
+        }
+
+        // Store the file path as the image URL in the database
+        String imageUrl = imagePath.toString();  // File path
         user.setUserImage(imageUrl);
         userRepository.save(user);
 

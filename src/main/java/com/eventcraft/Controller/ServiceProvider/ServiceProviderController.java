@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/serviceProviders")
 
-@CrossOrigin(origins = "*") 
+//@CrossOrigin(origins = "*") 
 public class ServiceProviderController {
 
     @Autowired
