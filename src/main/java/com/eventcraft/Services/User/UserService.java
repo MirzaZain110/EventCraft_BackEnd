@@ -20,7 +20,8 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
-
+    private final String imageDirectory = "upload/images/usersImages";
+    
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
@@ -56,36 +57,64 @@ public class UserService {
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
-
+    
     public String uploadUserImage(Long userId, MultipartFile file) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Directory where images will be stored
-        String directory = "C:\\Users\\Mirza Zain\\OneDrive\\Desktop\\Test Photos\\";
-        File targetDir = new File(directory);
-
         // Ensure the directory exists
-        if (!targetDir.exists()) {
-            targetDir.mkdirs();
-        }
-
-        // Construct the file name
-        String fileName = "user_" + userId + "_" + file.getOriginalFilename();
-        Path imagePath = Paths.get(directory, fileName);
-
+        Path uploadPath = Paths.get(imageDirectory);
         try {
-            // Save the file
-            Files.copy(file.getInputStream(), imagePath, StandardCopyOption.REPLACE_EXISTING);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            // Construct file name and save the file
+            String fileName = "user_" + userId + "_" + file.getOriginalFilename();
+            Path filePath = uploadPath.resolve(fileName);
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            // Update user's image path
+            String fileUrl = filePath.toString();
+//            user.setUserImage(fileUrl); 
+            user.setUserImage(fileName); // updated for making url of get image work
+            userRepository.save(user);
+
+            return fileUrl;
         } catch (IOException e) {
-            throw new RuntimeException("Failed to store image: " + e.getMessage());
+            throw new RuntimeException("Failed to upload image: " + e.getMessage());
+        }
+    }
+
+    public String updateUserImage(Long userId, MultipartFile file) {
+        User user = getUserById(userId);
+
+        // Delete existing image
+        if (user.getUserImage() != null) {
+            Path oldImagePath = Paths.get(user.getUserImage());
+            try {
+                Files.deleteIfExists(oldImagePath);
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to delete old image: " + e.getMessage());
+            }
         }
 
-        // Store the file path as the image URL in the database
-        String imageUrl = imagePath.toString();  // File path
-        user.setUserImage(imageUrl);
-        userRepository.save(user);
+        // Upload new image
+        return uploadUserImage(userId, file);
+    }
 
-        return imageUrl;
+    public void deleteUserImage(Long userId) {
+        User user = getUserById(userId);
+
+        if (user.getUserImage() != null) {
+            Path imagePath = Paths.get(user.getUserImage());
+            try {
+                Files.deleteIfExists(imagePath);
+                user.setUserImage(null);
+                userRepository.save(user);
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to delete image: " + e.getMessage());
+            }
+        }
     }
 }

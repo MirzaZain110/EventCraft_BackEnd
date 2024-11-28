@@ -1,6 +1,7 @@
 package com.eventcraft.Controller.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -8,11 +9,14 @@ import org.springframework.web.multipart.MultipartFile;
 import com.eventcraft.Services.User.UserService;
 import com.eventcraft.entities.Users.User;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
-//@CrossOrigin(origins = "*")  // Use for testing purposes
 public class UserController {
 
     @Autowired
@@ -43,12 +47,6 @@ public class UserController {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
-
-    @PostMapping("/{id}/uploadImage")
-    public ResponseEntity<String> uploadUserImage(@PathVariable Long id, @RequestParam("image") MultipartFile file) {
-        String imageUrl = userService.uploadUserImage(id, file);
-        return ResponseEntity.ok(imageUrl);
-    }
     
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody User loginRequest) {
@@ -78,4 +76,39 @@ public class UserController {
             return ResponseEntity.status(500).body("An error occurred: " + e.getMessage());
         }
     }
+    
+    // images work are here 
+    
+    @PostMapping("/{id}/uploadImage")
+    public ResponseEntity<String> uploadUserImage(@PathVariable Long id, @RequestParam("image") MultipartFile file) {
+        String imageUrl = userService.uploadUserImage(id, file);
+        return ResponseEntity.ok(imageUrl);
+    }
+
+    @PutMapping("/{id}/updateImage")
+    public ResponseEntity<String> updateUserImage(@PathVariable Long id, @RequestParam("image") MultipartFile file) {
+        String updatedImageUrl = userService.updateUserImage(id, file);
+        return ResponseEntity.ok(updatedImageUrl);
+    }
+
+    @DeleteMapping("/{id}/deleteImage")
+    public ResponseEntity<String> deleteUserImage(@PathVariable Long id) {
+        userService.deleteUserImage(id);
+        return ResponseEntity.ok("Image deleted successfully.");
+    }
+    // get images 
+    
+    @GetMapping("/images/{filename}") // updated the image name instead of url from service
+    public ResponseEntity<byte[]> getImage(@PathVariable String filename) {
+        Path imagePath = Paths.get("upload/images/usersImages").resolve(filename);
+
+        try {
+            byte[] imageBytes = Files.readAllBytes(imagePath);
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_JPEG) // Adjust if needed
+                    .body(imageBytes);
+        } catch (IOException e) {
+            return ResponseEntity.status(404).body(null);
+        }
+    } // how call EX: http://localhost:8080/api/users/images/user_1_Profile1.jpg
 }
