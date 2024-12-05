@@ -1,6 +1,7 @@
 package com.eventcraft.Controller.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,6 +11,10 @@ import com.eventcraft.Services.Service.ServicePictureService;
 import com.eventcraft.entities.Services.UseService;
 import com.eventcraft.entities.Services.ServicePicture;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
@@ -102,7 +107,21 @@ public class UseSeriveController {
     public ResponseEntity<List<ServicePicture>> getServicePictures(@PathVariable Long serviceId) {
         return ResponseEntity.ok(pictureService.getServiceImages(serviceId));
     }
+    
+    @GetMapping("/images/{filename}") // updated the image name instead of url from service
+    public ResponseEntity<byte[]> getImage(@PathVariable String filename) {
+        Path imagePath = Paths.get("upload/images/service_images").resolve(filename);
 
+        try {
+            byte[] imageBytes = Files.readAllBytes(imagePath);
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_JPEG) // Adjust if needed
+                    .body(imageBytes);
+        } catch (IOException e) {
+            return ResponseEntity.status(404).body(null);
+        }
+    }  //http://localhost:8080/api/services/images/service_1_hallkarsaz.jpg 
+    
     // Delete a picture for a specific service
 //    @DeleteMapping("/{serviceId}/pictures/{pictureId}")
 //    public ResponseEntity<Void> deletePicture(
