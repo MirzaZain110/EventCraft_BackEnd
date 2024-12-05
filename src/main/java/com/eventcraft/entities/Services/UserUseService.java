@@ -25,6 +25,8 @@ public class UserUseService {
     private double serviceRating;
     
     // constructor
+    public UserUseService() {
+    }
     public UserUseService(Long id, User user, UseService service, String serviceStatus, LocalDateTime serviceDateTime,
 			double serviceRating) {
 		super();

@@ -2,6 +2,10 @@ package com.eventcraft.entities.Services;
 
 import com.eventcraft.entities.ServiceProvider.ServiceProvider;
 import jakarta.persistence.*;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class UseService {
@@ -21,7 +25,21 @@ public class UseService {
     @JoinColumn(name = "serviceProvider_id")
     private ServiceProvider serviceProvider;
 
+    // For the Picture which user will upload for services 
+    @OneToMany(mappedBy = "useService", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ServicePicture> pictures = new ArrayList<>();
+
+    
+    
+    
     // Getters and Setters
+    public List<ServicePicture> getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(List<ServicePicture> pictures) {
+        this.pictures = pictures;
+    }
     
     public Long getServiceId() {
         return serviceId;
@@ -90,7 +108,7 @@ public class UseService {
     // Constructors
 
     public UseService(Long serviceId, String serviceName, String serviceType, double servicePrice, String serviceCity,
-                      String serviceArea, int serviceCapacity, ServiceProvider serviceProvider) {
+                      String serviceArea, int serviceCapacity, ServiceProvider serviceProvider, List<ServicePicture> pictures) {
         super();
         this.serviceId = serviceId;
         this.serviceName = serviceName;
@@ -100,6 +118,7 @@ public class UseService {
         this.serviceArea = serviceArea;
         this.serviceCapacity = serviceCapacity;
         this.serviceProvider = serviceProvider;
+        this.pictures = pictures; // updated for picture upload 
     }
 
     public UseService() {
