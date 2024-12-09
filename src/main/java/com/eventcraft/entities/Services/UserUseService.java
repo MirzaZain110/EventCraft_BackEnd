@@ -24,11 +24,15 @@ public class UserUseService {
     private LocalDateTime serviceDateTime;
     private double serviceRating;
     
+    // optional 
+    private Integer numberOfPeople; // Optional field for services that require it
+    private String location; // Optional field for services that require location
+    
     // constructor
     public UserUseService() {
     }
     public UserUseService(Long id, User user, UseService service, String serviceStatus, LocalDateTime serviceDateTime,
-			double serviceRating) {
+			double serviceRating, Integer numberOfPeople, String location) {
 		super();
 		this.id = id;
 		this.user = user;
@@ -36,6 +40,8 @@ public class UserUseService {
 		this.serviceStatus = serviceStatus;
 		this.serviceDateTime = serviceDateTime;
 		this.serviceRating = serviceRating;
+        this.numberOfPeople = numberOfPeople;
+        this.location = location;
 	}
     // getter and setter
 	public Long getId() {
@@ -75,6 +81,21 @@ public class UserUseService {
 	public void setServiceRating(double serviceRating) {
 		this.serviceRating = serviceRating;
 	}
+    public Integer getNumberOfPeople() {
+        return numberOfPeople;
+    }
+
+    public void setNumberOfPeople(Integer numberOfPeople) {
+        this.numberOfPeople = numberOfPeople;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
     
 }
