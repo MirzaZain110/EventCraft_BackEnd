@@ -45,12 +45,12 @@ public class UserUseService {
         this.location = location;
 //        this.planEvent = planEvent;
 	}
-//    public PlanEvent getPlanEvent() {
-//		return planEvent;
-//	}
-//	public void setPlanEvent(PlanEvent planEvent) {
-//		this.planEvent = planEvent;
-//	}
+    public PlanEvent getPlanEvent() {
+		return planEvent;
+	}
+	public void setPlanEvent(PlanEvent planEvent) {
+		this.planEvent = planEvent;
+	}
 	// getter and setter
 	public Long getId() {
 		return id;

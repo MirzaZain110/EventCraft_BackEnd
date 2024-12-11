@@ -155,6 +155,7 @@ public class EventController {
 
             // Save UserUseService details
             UserUseService userUseService = new UserUseService();
+            userUseService.setPlanEvent(savedEvent);
             userUseService.setPlanEventService(savedService);
             userUseService.setLocation(serviceDetail.getLocation());
             userUseService.setNumberOfPeople(serviceDetail.getNoOfPeople());
