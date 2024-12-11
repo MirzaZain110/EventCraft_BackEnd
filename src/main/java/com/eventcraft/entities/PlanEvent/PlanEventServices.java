@@ -47,3 +47,12 @@ public class PlanEventServices {
     }
 }
 
+//{  // API POST DATA
+//	  "planEvent": {
+//	    "planEventId": 1
+//	  },
+//	  "service": {
+//	    "serviceId": 13
+//	  }
+//	}
+

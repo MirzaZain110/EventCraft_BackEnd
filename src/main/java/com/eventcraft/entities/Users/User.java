@@ -34,7 +34,26 @@ public class User {
 
     // Getters and Setters
 
-    public Long getUserId() {
+    public User() {
+        // Default constructor
+    }
+    public User(Long userId, String userName, String userEmail, String userPassword, String userPhone,
+			String userLocation, LocalDate userDateOfBirth, String userImage) {
+		super();
+		this.userId = userId;
+		this.userName = userName;
+		this.userEmail = userEmail;
+		this.userPassword = userPassword;
+		this.userPhone = userPhone;
+		this.userLocation = userLocation;
+		this.userDateOfBirth = userDateOfBirth;
+		this.userImage = userImage;
+	}
+	public User(Long userId) {
+        this.userId = userId;
+    }
+
+	public Long getUserId() {
         return userId;
     }
 

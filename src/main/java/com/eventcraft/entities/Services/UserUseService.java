@@ -3,22 +3,22 @@ package com.eventcraft.entities.Services;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
-import com.eventcraft.entities.Users.User;
-
+import com.eventcraft.entities.PlanEvent.*;
 @Entity
 public class UserUseService {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    @ManyToOne
+    @JoinColumn(name = "plan_event_id")
+    private PlanEvent planEvent; 
+
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "service_id")
-    private UseService service;
+    @JoinColumn(name = "PlanSeviceid_FK")
+    private PlanEventServices planEventService;
 
     private String serviceStatus;
     private LocalDateTime serviceDateTime;
@@ -31,38 +31,41 @@ public class UserUseService {
     // constructor
     public UserUseService() {
     }
-    public UserUseService(Long id, User user, UseService service, String serviceStatus, LocalDateTime serviceDateTime,
-			double serviceRating, Integer numberOfPeople, String location) {
+    public UserUseService(Long id, PlanEventServices planEventService, String serviceStatus, LocalDateTime serviceDateTime,
+			double serviceRating, Integer numberOfPeople, String location
+//			,PlanEvent planEvent
+			) {
 		super();
 		this.id = id;
-		this.user = user;
-		this.service = service;
+		this.planEventService = planEventService;
 		this.serviceStatus = serviceStatus;
 		this.serviceDateTime = serviceDateTime;
 		this.serviceRating = serviceRating;
         this.numberOfPeople = numberOfPeople;
         this.location = location;
+//        this.planEvent = planEvent;
 	}
-    // getter and setter
+//    public PlanEvent getPlanEvent() {
+//		return planEvent;
+//	}
+//	public void setPlanEvent(PlanEvent planEvent) {
+//		this.planEvent = planEvent;
+//	}
+	// getter and setter
 	public Long getId() {
 		return id;
 	}
-	
+	// updated the plan event services getter and setters 
+	public PlanEventServices getPlanedEventService() {
+		return planEventService;
+	}
+	public void setPlanEventService(PlanEventServices planedEventService) {
+		planEventService = planedEventService;
+	}
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public User getUser() {
-		return user;
-	}
-	public void setUser(User user) {
-		this.user = user;
-	}
-	public UseService getService() {
-		return service;
-	}
-	public void setService(UseService service) {
-		this.service = service;
-	}
+	
 	public String getServiceStatus() {
 		return serviceStatus;
 	}

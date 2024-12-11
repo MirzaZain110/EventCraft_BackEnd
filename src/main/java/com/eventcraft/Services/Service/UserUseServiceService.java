@@ -42,5 +42,9 @@ public class UserUseServiceService {
     public void deleteUserService(Long id) {
         userServiceRepository.deleteById(id);
     }
+
+    public List<UserUseService> getByPlanEventService(Long planEventServiceId) {
+        return userServiceRepository.findByPlanEventService_Service_ServiceId(planEventServiceId);
+    }
     
 }

@@ -29,8 +29,8 @@ public class UseService {
     @OneToMany(mappedBy = "useService", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ServicePicture> pictures = new ArrayList<>();
 
-    
-    
+    UseService()
+    {}    
     
     // Getters and Setters
     public List<ServicePicture> getPictures() {
@@ -121,6 +121,7 @@ public class UseService {
         this.pictures = pictures; // updated for picture upload 
     }
 
-    public UseService() {
+    public UseService(Long serviceId) {
+        this.serviceId = serviceId;
     }
 }
