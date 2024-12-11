@@ -107,10 +107,6 @@ public class PlanEventService {
             }
         }
     
-        
-        
-        
-    
     
     List<EventRequestDto> event = new ArrayList();
     
@@ -123,14 +119,17 @@ public class PlanEventService {
 //    // Populate the services list as needed
 //    services.add(new ServiceDetails(Long.valueOf(1), list2.get(0).getNumberOfPeople(), list2.get(0).getLocation(),
 //    		list2.get(0).getServiceStatus(), list2.get(0).getServiceDateTime(), list2.get(0).getServiceRating()));
-    event.add(new EventRequestDto(
-        planEvent.get(0).getPlanEventName(),
-        planEvent.get(0).getPlanEventDescription(),
-        planEvent.get(0).getPlanEventBudget(),
-        planEvent.get(0).getUser().getUserId(),
-        services
-    ));
-
+    for(int z = 0;z<planEvent.size();z++)
+    {
+	    event.add(new EventRequestDto(
+	        planEvent.get(z).getPlanEventName(),
+	        planEvent.get(z).getPlanEventDescription(),
+	        planEvent.get(z).getPlanEventBudget(),
+	        planEvent.get(z).getUser().getUserId(),
+	        services
+	    ));
+    }
+	    
 //   event.add(new EventRequestDto(planEvent.get(1).getPlanEventName(),
 //		   planEvent.get(1).getPlanEventDescription()
 //		   ,planEvent.get(1).getPlanEventBudget(), planEvent.get(1).getUser().getUserId()));
