@@ -18,4 +18,6 @@ public interface ServiceRepository extends JpaRepository<UseService, Long> {
 
     @Query("SELECT s FROM UseService s WHERE s.serviceCity = :city AND s.serviceType = :type")
     List<UseService> findByCityAndType(@Param("city") String city, @Param("type") String type);
+
+	List<UseService> findByServiceProvider_ServiceProviderEmail(String email);
 }

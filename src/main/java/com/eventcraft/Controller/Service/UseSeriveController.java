@@ -34,11 +34,15 @@ public class UseSeriveController {
     }
 
     // Get a service by ID
-    @GetMapping("/{id}")
-    public ResponseEntity<UseService> getServiceById(@PathVariable Long id) {
-        return ResponseEntity.ok(serviceService.getServiceById(id));
+    @GetMapping("/serviceProvider/{id}")
+    public ResponseEntity<List<UseService>> getServiceById(@PathVariable Long id) {
+        return ResponseEntity.ok(serviceService.getServicesByServiceProviderId(id));
     }
-
+    
+    @GetMapping("/serviceProvider/email/{email}")
+    public ResponseEntity<List<UseService>> getServiceByEmail(@PathVariable String email) {
+        return ResponseEntity.ok(serviceService.getServicesByServiceProviderEmail(email));
+    }
     // Create a new service
     @PostMapping
     public ResponseEntity<UseService> createService(@RequestBody UseService service) {

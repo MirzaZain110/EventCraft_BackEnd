@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 //@CrossOrigin(origins = "*") 
 public class ServiceProviderController {
-
+	
     @Autowired
     private ServiceProviderService serviceProviderService;
 
@@ -30,12 +30,22 @@ public class ServiceProviderController {
         return ResponseEntity.ok(serviceProviderDTOs);
     }
 
+    @GetMapping("/email/{email}")
+    public ResponseEntity<ServiceProviderDTO> getServiceProviderByEmail(@PathVariable String email) {
+        ServiceProvider serviceProvider = serviceProviderService.getServiceProviderByEmail(email);
+        return ResponseEntity.ok(serviceProviderService.convertToDTO(serviceProvider));
+    }
+//    public ResponseEntity<ServiceProviderDTO> getServiceProviderByEmail(@PathVariable String email) {
+//        ServiceProvider serviceProvider = serviceProviderService.getServiceProviderByEmail(email)));
+//        return ResponseEntity.ok(serviceProviderService.convertToDTO(serviceProvider));
+//    }
+    
     @GetMapping("/{id}")
     public ResponseEntity<ServiceProviderDTO> getServiceProviderById(@PathVariable Long id) {
         ServiceProvider serviceProvider = serviceProviderService.getServiceProviderById(id);
         return ResponseEntity.ok(serviceProviderService.convertToDTO(serviceProvider));
     }
-
+    
     @PostMapping
     public ResponseEntity<ServiceProviderDTO> createServiceProvider(@RequestBody ServiceProviderDTO serviceProviderDTO) {
         ServiceProvider serviceProvider = serviceProviderService.convertToEntity(serviceProviderDTO);

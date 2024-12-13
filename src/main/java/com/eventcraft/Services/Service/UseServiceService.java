@@ -101,4 +101,15 @@ public class UseServiceService {
         pictureRepository.deleteById(pictureId);
     }
     // images worker end
+
+//	public Object getServicesByServiceProviderEmail(String email) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+    public List<UseService> getServicesByServiceProviderEmail(String email) {
+        return serviceRepository.findByServiceProvider_ServiceProviderEmail(email);
+    }
+
+	
+    
 }

@@ -23,7 +23,10 @@ public class ServiceProviderService {
         return serviceProviderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("ServiceProvider not found"));
     }
-
+    public ServiceProvider getServiceProviderByEmail(String email) {
+        return serviceProviderRepository.findByserviceProviderEmail(email);
+    }
+//    findByserviceProviderEmail
     public ServiceProvider createServiceProvider(ServiceProvider serviceProvider) {
         return serviceProviderRepository.save(serviceProvider);
     }

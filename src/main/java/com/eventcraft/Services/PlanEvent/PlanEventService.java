@@ -115,13 +115,25 @@ public class PlanEventService {
 //    event2.add(new )
    // instead of planevent  get data by list2.
    
+//    for(int z = 0;z<list2.size();z++)
+//    {
+//	    event2.add(new EventRequestDto(  // GET multiple Events
+//	        list2.get(z)getPlanEventName(),
+//	        list2.get(z).getPlanEventDescription(),
+//	        list2.get(z).getPlanEventBudget(),
+//	        list2.get(z).getUser().getUserId(),
+//	        services
+//	    ));
+//    }
+    
  
 //    // Populate the services list as needed
 //    services.add(new ServiceDetails(Long.valueOf(1), list2.get(0).getNumberOfPeople(), list2.get(0).getLocation(),
 //    		list2.get(0).getServiceStatus(), list2.get(0).getServiceDateTime(), list2.get(0).getServiceRating()));
+    
     for(int z = 0;z<planEvent.size();z++)
     {
-	    event.add(new EventRequestDto(
+	    event.add(new EventRequestDto(  // GET multiple Events
 	        planEvent.get(z).getPlanEventName(),
 	        planEvent.get(z).getPlanEventDescription(),
 	        planEvent.get(z).getPlanEventBudget(),
